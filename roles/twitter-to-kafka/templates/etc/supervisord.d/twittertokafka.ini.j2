@@ -1,0 +1,15 @@
+[program:twittertokafka]
+command=spark-submit --master yarn --num-executors {{ twittertokafka_num_executors }} --class ch.daplab.spark.streaming.TwitterToKafka /opt/daplab/twitter-to-kafka/lib/twitter-to-kafka-jar-with-dependencies.jar public.tweets daplab-rt-11.fri.lan:6667 10
+autostart=true
+autorestart=true
+startsecs=10
+startretries=3
+user={{ twittertokafka_user }}
+stopsignal=TERM
+stopasgroup=true
+stdout_logfile=/opt/daplab/twitter-to-kafka/logs/supervisord.out.log
+stdout_logfile_maxbytes=10000000
+stdout_logfile_backups=5
+stderr_logfile=/opt/daplab/twitter-to-kafka/logs/supervisord.err.log
+stderr_logfile_maxbytes=10000000
+stderr_logfile_backups=5

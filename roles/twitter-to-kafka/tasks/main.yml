@@ -1,0 +1,28 @@
+---
+    
+  - yum: name=twitter-to-kafka-{{ twittertokafka_version }} state=present disable_gpg_check=yes
+    sudo: true
+    notify:
+      - twittertokafka started
+      - restart twittertokafka
+    when: twittertokafkatesting is not defined
+
+# for testing
+  - get_url: url=https://jenkins.daplab.ch/job/Twitter-to-Kafka/lastSuccessfulBuild/artifact/target/rpm/twitter-to-kafka-el6.x86_64/RPMS/x86_64/twitter-to-kafka-{{ twittertokafka_version}}.x86_64.rpm dest=/tmp url_password=daplab url_username=jenkins
+    when: twittertokafkatesting is defined
+  - yum: name=/tmp/twitter-to-kafka-{{ twittertokafka_version }}.x86_64.rpm state=installed
+    sudo: true
+    when: twittertokafkatesting is defined
+
+
+  - template: src=etc/supervisord.d/twittertokafka.ini.j2 dest=/etc/supervisord.d/twittertokafka.ini
+    sudo: true
+    notify:
+      - twittertokafka started
+      - restart twittertokafka
+
+  - supervisorctl: name=twittertokafka state=present
+    sudo: true
+    notify:
+      - twittertokafka started
+      - restart twittertokafka

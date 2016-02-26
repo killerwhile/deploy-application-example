@@ -1,0 +1,6 @@
+
+twittertokafka_version: '1.0.1-4'
+
+twittertokafka_user: daplab_prod
+
+twittertokafka_num_executors: 2

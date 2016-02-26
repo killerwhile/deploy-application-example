@@ -1,0 +1,8 @@
+- name: restart twittertokafka
+  supervisorctl: name=twittertokafka state=restarted
+  sudo: yes
+  ignore_errors: true
+
+- name: twittertokafka started
+  supervisorctl: name=twittertokafka state=started
+  sudo: true
